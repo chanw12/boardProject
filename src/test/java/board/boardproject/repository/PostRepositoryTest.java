@@ -18,10 +18,10 @@ class PostRepositoryTest {
     @Autowired
     PostRepository postRepository;
 
-//    @AfterEach
-//    public void clear(){
-//        postRepository.deleteAll();
-//    }
+    @AfterEach
+    public void clear(){
+        postRepository.deleteAll();
+    }
 
     @Test
     public void createAndSavePost(){
