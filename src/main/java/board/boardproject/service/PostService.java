@@ -39,5 +39,10 @@ public class PostService {
         return id;
     }
 
+    @Transactional
+    public PostResponseDto findOne(Long id){
+        return new PostResponseDto(postRepository.findById(id).get());
+    }
+
 
 }
