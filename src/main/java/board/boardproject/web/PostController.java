@@ -18,7 +18,10 @@ public class PostController {
 
     @GetMapping("/board/list")
     public String hello(Model model){
+<<<<<<< HEAD
         model.addAttribute("boardList",postService.findAll_By_createTime());
+=======
+>>>>>>> make_page
         return "board/list";
     }
 }
