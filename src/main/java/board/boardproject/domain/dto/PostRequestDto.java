@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostSaveDto {
+public class PostRequestDto {
 
     private String title;
     private String writer;
