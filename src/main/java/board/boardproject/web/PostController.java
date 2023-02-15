@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PostController {
     @GetMapping("/board/list")
     public String hello(Model model){
-
         return "board/list";
     }
 }
