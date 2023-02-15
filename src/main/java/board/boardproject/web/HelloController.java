@@ -1,5 +1,6 @@
 package board.boardproject.web;
 
+import board.boardproject.domain.dto.PostRequestDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,5 @@ public class HelloController {
     public String update(Model model){
         return "/board/update";
     }
-    @GetMapping("/write")
-    public String write(Model model){
-        return "/board/write";
-    }
+
 }

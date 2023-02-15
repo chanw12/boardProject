@@ -20,24 +20,22 @@ import java.nio.charset.Charset;
 @Slf4j
 public class PostApiController {
     private final PostService postService;
-    @PostMapping("/api/posts")
-    public ResponseEntity<PostRequestDto> save(@RequestBody PostRequestDto dto){
-        Long saveId = postService.save(dto);
-        log.info(dto.toEntity().getContent());
+//    @PostMapping("/api/posts")
+//    public ResponseEntity<PostRequestDto> save(@RequestBody PostRequestDto dto){
+//        Long saveId = postService.save(dto);
+//        log.info(dto.toEntity().getContent());
+//
+//        return ResponseEntity.ok().body(dto);
+//    }
 
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        return ResponseEntity.ok().headers(headers).body(dto);
-    }
-
-    @PostMapping("/api/posts/{id}")
-    public ResponseEntity<Long> update(@PathVariable("id") Long id,@RequestBody PostRequestDto dto){
-        if (id == null){
-            return ResponseEntity.notFound().build();
-        }else{
-            return ResponseEntity.ok(postService.update(id,dto));
-        }
-    }
+//    @PostMapping("/api/posts/{id}")
+//    public ResponseEntity<Long> update(@PathVariable("id") Long id,@RequestBody PostRequestDto dto){
+//        if (id == null){
+//            return ResponseEntity.notFound().build();
+//        }else{
+//            return ResponseEntity.ok(postService.update(id,dto));
+//        }
+//
+//    }
 
 }
