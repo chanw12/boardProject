@@ -38,4 +38,10 @@ public class PostApiController {
 //
 //    }
 
+    @PostMapping("/api/post/edit/{id}")
+    public ResponseEntity<Long> update(@PathVariable Long id,@RequestBody PostRequestDto dto){
+
+        return ResponseEntity.ok(postService.update(id,dto));
+    }
+
 }

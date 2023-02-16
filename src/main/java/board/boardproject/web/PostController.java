@@ -43,12 +43,12 @@ public class PostController {
 
         return "/board/detail";
     }
-    @GetMapping("/update")
-    public String update(Model model){
-
-
+    @GetMapping("/board/post/edit/{id}")
+    public String update(Model model,@PathVariable Long id){
+        model.addAttribute("boardDto",postService.findOne(id));
         return "/board/update";
     }
+
 
 
     /**
@@ -60,6 +60,11 @@ public class PostController {
     public String save(PostRequestDto dto){
         Long saveId = postService.save(dto);
         return "redirect:/board/list";
+    }
+    @PostMapping("/api/post/edit/{id}")
+    public String update(@PathVariable Long id,PostRequestDto dto){
+        Long update = postService.update(id, dto);
+        return "redirect:/board/post/" + id;
     }
 
 
