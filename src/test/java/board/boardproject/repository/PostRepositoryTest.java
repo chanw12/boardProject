@@ -28,7 +28,6 @@ class PostRepositoryTest {
         Post post = new Post("안녕하새요 가입했어요","안녕하세요 강찬우 라고 합니다 ","chanw12");
         postRepository.save(post);
         Post findPost = postRepository.findById(post.getId()).get();
-
         assertThat(post.getId()).isEqualTo(findPost.getId());
 
     }

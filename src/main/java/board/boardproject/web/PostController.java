@@ -51,6 +51,8 @@ public class PostController {
 
 
 
+
+
     /**
      *
      * 밑 부분은 restcontroller를 사용하려던 요청에 대한 api들을 모아놓았다.
@@ -67,6 +69,11 @@ public class PostController {
         return "redirect:/board/post/" + id;
     }
 
+    @PostMapping("/api/post/delete/{id}")
+    public String delete(@PathVariable Long id){
+        postService.deleteOne(id);
+        return "redirect:/board/list";
+    }
 
 
 }

@@ -43,6 +43,12 @@ public class PostService {
     public PostResponseDto findOne(Long id){
         return new PostResponseDto(postRepository.findById(id).get());
     }
+    @Transactional
+    public void deleteOne(Long id){
+        Post findPost = postRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("글이 존재하지 않습니다"));
+        postRepository.delete(findPost);
+    }
 
 
 }
