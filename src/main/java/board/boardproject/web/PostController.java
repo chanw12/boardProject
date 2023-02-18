@@ -1,5 +1,6 @@
 package board.boardproject.web;
 
+import board.boardproject.domain.Post;
 import board.boardproject.domain.dto.PostRequestDto;
 import board.boardproject.domain.dto.PostResponseDto;
 import board.boardproject.repository.PostRepository;
@@ -7,13 +8,15 @@ import board.boardproject.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Slf4j
@@ -25,9 +28,9 @@ public class PostController {
     private final PostRepository postRepository;
 
     @GetMapping("/board/list")
-    public String hello(Model model){
-
-        model.addAttribute("boardList",postService.findAll_By_createTime());
+    public String hello(@PageableDefault(sort = "createDate",direction = Sort.Direction.DESC) Pageable pageable, Model model){
+        model.addAttribute("boardList",postService.findAll_By_createTime(pageable));
+        model.addAttribute("pageList",postService.getPageList(pageable));
 
         return "board/list";
     }

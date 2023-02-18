@@ -5,11 +5,13 @@ import board.boardproject.domain.dto.PostResponseDto;
 import board.boardproject.domain.dto.PostRequestDto;
 import board.boardproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,11 +27,12 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostResponseDto> findAll_By_createTime(){
-        return postRepository.findAll_By_createTime()
+    public List<PostResponseDto> findAll_By_createTime(Pageable pageable){
+        return postRepository.findAll(pageable)
                 .stream().map(PostResponseDto::new)
                 .collect(Collectors.toList());
     }
+
 
     @Transactional
     public Long update(Long id ,PostRequestDto dto){
@@ -49,6 +52,36 @@ public class PostService {
                 new IllegalArgumentException("글이 존재하지 않습니다"));
         postRepository.delete(findPost);
     }
+
+    /**
+     * paging
+     */
+    @Transactional
+    public Page<Post> getPage(Pageable pageable){
+        return postRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public List<Integer> getPageList(Pageable pageable) {
+        int currentPage = pageable.getPageNumber()+1; // 0-based 인덱스를 1-based 인덱스로 변환
+        int totalPage = postRepository.findAll(pageable).getTotalPages(); // 총 페이지 수
+
+        int startPage = Math.max(1, currentPage - 5);
+        int endPage = Math.min(totalPage, currentPage + 5);
+
+        List<Integer> pageList = new ArrayList<>();
+        for (int i = startPage; i <= endPage; i++) {
+            pageList.add(i);
+        }
+        return pageList;
+    }
+
+
+
+
+
+
+
 
 
 }
