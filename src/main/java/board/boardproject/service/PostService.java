@@ -83,6 +83,21 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<Integer> getSearchPageList(String keyword,Pageable pageable) {
+        int currentPage = pageable.getPageNumber()+1; // 0-based 인덱스를 1-based 인덱스로 변환
+        int totalPage = postRepository.findPostByTitleContaining(keyword,pageable).getTotalPages(); // 총 페이지 수
+
+        int startPage = Math.max(1, currentPage - 5);
+        int endPage = Math.min(totalPage, currentPage + 5);
+
+        List<Integer> pageList = new ArrayList<>();
+        for (int i = startPage; i <= endPage; i++) {
+            pageList.add(i);
+        }
+        return pageList;
+    }
+
 
 
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
 
-    List<Post> findPostByTitleContaining(String keyword, Pageable pageable);
+    Page<Post> findPostByTitleContaining(String keyword, Pageable pageable);
 
 }
 
