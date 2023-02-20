@@ -76,20 +76,52 @@ public class PostService {
         return pageList;
     }
 
+    /**
+     * search paging
+     */
     @Transactional
-    public List<PostResponseDto> searchTitletFind(String keyword,Pageable pageable){
-        return postRepository.findPostByTitleContaining(keyword,pageable)
-                .stream().map(PostResponseDto::new)
+    public List<PostResponseDto> searchFind(String type,String keyword,Pageable pageable){
+        Page<Post> searchResult;
+        switch (type) {
+            case "title":
+                searchResult = postRepository.findPostByTitleContaining(keyword, pageable);
+                break;
+            case "content":
+                searchResult = postRepository.findPostByContentContaining(keyword, pageable);
+                break;
+            case "writer":
+                searchResult = postRepository.findPostByWriterContaining(keyword, pageable);
+                break;
+            default:
+                throw new IllegalArgumentException("지원하지 않는 타입입니다: " + type);
+        }
+        List<PostResponseDto> postResponseDtos = searchResult.getContent()
+                .stream()
+                .map(PostResponseDto::new)
                 .collect(Collectors.toList());
+        return postResponseDtos;
     }
 
-    @Transactional
-    public List<Integer> getSearchPageList(String keyword,Pageable pageable) {
-        int currentPage = pageable.getPageNumber()+1; // 0-based 인덱스를 1-based 인덱스로 변환
-        int totalPage = postRepository.findPostByTitleContaining(keyword,pageable).getTotalPages(); // 총 페이지 수
 
+    @Transactional
+    public List<Integer> getSearchPageList(String type,String keyword,Pageable pageable) {
+        Page<Post> searchResult;
+        switch (type) {
+            case "title":
+                searchResult = postRepository.findPostByTitleContaining(keyword, pageable);
+                break;
+            case "content":
+                searchResult = postRepository.findPostByContentContaining(keyword, pageable);
+                break;
+            case "writer":
+                searchResult = postRepository.findPostByWriterContaining(keyword, pageable);
+                break;
+            default:
+                throw new IllegalArgumentException("타입이 정의 되지 않았습니다");
+        }
+        int currentPage = searchResult.getNumber() + 1;
         int startPage = Math.max(1, currentPage - 5);
-        int endPage = Math.min(totalPage, currentPage + 5);
+        int endPage = Math.min(searchResult.getTotalPages(), currentPage + 5);
 
         List<Integer> pageList = new ArrayList<>();
         for (int i = startPage; i <= endPage; i++) {

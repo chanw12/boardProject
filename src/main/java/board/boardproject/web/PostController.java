@@ -53,10 +53,11 @@ public class PostController {
     }
     @GetMapping("/board/search")
     public String search(@PageableDefault(sort = "createDate",direction = Sort.Direction.DESC) Pageable pageable,
-                         Model model , @RequestParam String keyword){
-        model.addAttribute("boardList",postService.searchTitletFind(keyword,pageable));
-        model.addAttribute("pageList",postService.getSearchPageList(keyword,pageable));
+                         Model model , @RequestParam String keyword,@RequestParam String type){
+        model.addAttribute("boardList",postService.searchFind(type,keyword,pageable));
+        model.addAttribute("pageList",postService.getSearchPageList(type, keyword, pageable));
         model.addAttribute("keyword",keyword);
+        model.addAttribute("type",type);
         return"/board/search_list";
     }
 

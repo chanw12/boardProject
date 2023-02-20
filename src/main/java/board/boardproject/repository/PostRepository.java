@@ -13,7 +13,8 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post,Long> {
 
     Page<Post> findPostByTitleContaining(String keyword, Pageable pageable);
-
+    Page<Post> findPostByContentContaining(String keyword,Pageable pageable);
+    Page<Post> findPostByWriterContaining(String keyword,Pageable pageable);
 }
 
 
