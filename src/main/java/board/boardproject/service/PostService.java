@@ -76,6 +76,13 @@ public class PostService {
         return pageList;
     }
 
+    @Transactional
+    public List<PostResponseDto> searchTitletFind(String keyword,Pageable pageable){
+        return postRepository.findPostByTitleContaining(keyword,pageable)
+                .stream().map(PostResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
 
 
 
