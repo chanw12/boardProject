@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,14 +14,14 @@ import java.time.LocalDateTime;
 @Getter
 public class Member {
 
-    @GeneratedValue @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) @Id
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String nickname;
 
     @Column(name = "created_date")
