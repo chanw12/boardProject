@@ -20,7 +20,7 @@ public class SpringSecurityConfig {
                 )
                 .formLogin(login -> login	// form 방식 로그인 사용
                         .loginPage("/login")
-                        .usernameParameter("userid")
+                        .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/board/list", true)	// 성공 시 dashboard로
                         .permitAll()	// 대시보드 이동이 막히면 안되므로 얘는 허용
