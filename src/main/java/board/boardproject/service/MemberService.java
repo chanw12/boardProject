@@ -9,6 +9,7 @@ import board.boardproject.domain.dto.PostResponseDto;
 import board.boardproject.repository.MemberRepository;
 import board.boardproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +19,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
 
     @Transactional
     public Long save(MemberRequestDto dto){
-        Member member = dto.toEntity();
+        MemberRequestDto pwencodedDto = new MemberRequestDto(dto.getUsername(), passwordEncoder.encode(dto.getPassword()), dto.getNickname());
+        Member member = pwencodedDto.toEntity();
         memberRepository.save(member);
         return member.getId();
     }

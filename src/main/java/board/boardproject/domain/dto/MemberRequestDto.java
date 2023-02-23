@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class MemberRequestDto {
+
 
     private String username;
     private String password;
