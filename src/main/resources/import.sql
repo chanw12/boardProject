@@ -78,3 +78,4 @@ insert into post (writer,created_date,modified_date,title,content) values ('chan
 insert into post (writer,created_date,modified_date,title,content) values ('chan',current_timestamp(),current_timestamp(),'test1','content');
 insert into post (writer,created_date,modified_date,title,content) values ('chan',current_timestamp(),current_timestamp(),'test1','content');
 insert into post (writer,created_date,modified_date,title,content) values ('chan',current_timestamp(),current_timestamp(),'end','content');
+insert into member (created_date,modified_date,nickname,password,username) values (current_timestamp(),current_timestamp(),'chan',1234,'chan')

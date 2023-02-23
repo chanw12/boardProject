@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController
 {
     @GetMapping("/login")
-    public String login(@ModelAttribute("dto") LoginFormDto dto){
+    public String login(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
@@ -24,10 +24,10 @@ public class LoginController
         return "/board/login";
 
     }
-    @PostMapping("/logout")
-    public String logout(){
-        return "redirect:/login";
-    }
+//    @PostMapping("/logout")
+//    public String logout(){
+//        return "redirect:/login";
+//    }
 
 
 }
