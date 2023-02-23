@@ -31,7 +31,11 @@
           <span class="sr-only" th:if="${menu} == 'board'">(current)</span>
         </a>
       </li>
+
     </ul>
+    <form action="/logout" method="POST">
+      <button class="btn btn-danger" type="submit">로그아웃</button>
+    </form>
   </div>
 </nav>
 </body>
