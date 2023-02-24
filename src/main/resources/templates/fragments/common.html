@@ -11,7 +11,7 @@
   <title th:text="${title}">Hello, Spring Boot!</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="info(menu,nickname)">
   <a class="navbar-brand" href="#">Board</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -33,6 +33,16 @@
       </li>
 
     </ul>
+    <div>
+      <li class="text-white text-xl-center navbar-collapse collapse w-100" id="collapsingNavbar3">
+        <span class="text-white"> 사용자 이름:
+        </span>
+
+        <span class="nav-link " href="#" id="navbarDropdownMenuLink" role="button"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${nickname}">
+        </span>
+      </li>
+    </div>
     <form action="/logout" method="POST">
       <button class="btn btn-danger" type="submit">로그아웃</button>
     </form>

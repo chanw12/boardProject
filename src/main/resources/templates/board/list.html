@@ -15,7 +15,9 @@
 </head>
 
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('home')"></nav>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: info('board',${nickname})">
+
+</nav>
 <body class="pt-xl-5">
 <main role="main" class="container">
     <div class="starter-template">
@@ -43,6 +45,7 @@
             </tr>
             </tbody>
         </table>
+
         <!-- Pagination -->
         <div style="margin: 10px">
             <span th:each="pageNum : ${pageList}" th:inline="text">
