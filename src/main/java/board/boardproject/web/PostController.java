@@ -42,29 +42,39 @@ public class PostController {
         return "board/list";
     }
     @GetMapping("/board/post")
-    public String write(Model model, PostRequestDto dto){
+    public String write(Model model, PostRequestDto dto, @AuthenticationPrincipal UserDetails user){
+
+        Member member = memberService.findOneByUsername(user.getUsername()).get();
+        model.addAttribute("nickname",member.getNickname());
+        dto.setWriter(member.getNickname());
         model.addAttribute("dto",dto);
+
         return "/board/write";
     }
 
     @GetMapping("/board/post/{id}")
-    public String detail(Model model, @PathVariable Long id){
+    public String detail(Model model, @PathVariable Long id, @AuthenticationPrincipal UserDetails user){
         model.addAttribute("boardDto",postService.findOne(id));
-
+        Member member = memberService.findOneByUsername(user.getUsername()).get();
+        model.addAttribute("nickname",member.getNickname());
         return "/board/detail";
     }
     @GetMapping("/board/post/edit/{id}")
-    public String update(Model model,@PathVariable Long id){
+    public String update(Model model,@PathVariable Long id,@AuthenticationPrincipal UserDetails user){
         model.addAttribute("boardDto",postService.findOne(id));
+        Member member = memberService.findOneByUsername(user.getUsername()).get();
+        model.addAttribute("nickname",member.getNickname());
         return "/board/update";
     }
     @GetMapping("/board/search")
     public String search(@PageableDefault(sort = "createDate",direction = Sort.Direction.DESC) Pageable pageable,
-                         Model model , @RequestParam String keyword,@RequestParam String type){
+                         Model model , @RequestParam String keyword,@RequestParam String type,@AuthenticationPrincipal UserDetails user){
         model.addAttribute("boardList",postService.searchFind(type,keyword,pageable));
         model.addAttribute("pageList",postService.getSearchPageList(type, keyword, pageable));
         model.addAttribute("keyword",keyword);
         model.addAttribute("type",type);
+        Member member = memberService.findOneByUsername(user.getUsername()).get();
+        model.addAttribute("nickname",member.getNickname());
         return"/board/search_list";
     }
 
