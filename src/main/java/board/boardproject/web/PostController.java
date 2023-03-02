@@ -102,12 +102,10 @@ public class PostController {
     @PostMapping("/api/posts")
     public String save(@Valid PostRequestDto dto, Errors errors,Model model){
         if(errors.hasErrors()){
-            System.out.println(dto);
             model.addAttribute("dto",dto);
             Map<String,String> validateResult = postService.validateHandling(errors);
             for (String key : validateResult.keySet()){
                 model.addAttribute(key,validateResult.get(key));
-                System.out.println(key);
             }
             return "/board/write";
         }
