@@ -15,6 +15,7 @@ public class MemberController {
     private final MemberService memberService;
     @GetMapping("/register")
     public String register(@ModelAttribute("dto")MemberRequestDto dto){
+
         return "/board/register";
     }
 

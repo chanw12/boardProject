@@ -30,6 +30,10 @@ class PostServiceTest {
 
     @Test
     void save() {
+        PostRequestDto dto = new PostRequestDto(null,"chan",null);
+        Long id = postService.save(dto);
+        System.out.println(id);
+
     }
 
     @Test

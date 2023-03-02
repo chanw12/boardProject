@@ -1,10 +1,10 @@
 package board.boardproject.domain.dto;
 
 import board.boardproject.domain.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.sun.istack.NotNull;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
@@ -12,8 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostRequestDto {
 
+    @NotBlank
     private String title;
+    @NotBlank
     private String writer;
+
+    @NotBlank
     private String content;
 
     public Post toEntity(){

@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 public class MemberRequestDto {
 
 
+
     private String username;
     private String password;
     private String nickname;

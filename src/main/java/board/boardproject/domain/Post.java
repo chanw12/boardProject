@@ -3,11 +3,13 @@ package board.boardproject.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,12 +22,14 @@ public class Post {
     private Long Id;
 
     @Column(nullable = false)
+    @Size(min = 2,max = 20,message = "제목은 2자에서 20자 이내로 이루어져 있어야합니다")
     private String title;
 
     @Column(columnDefinition = "TEXT",nullable = false)
     private String content;
 
     @Column(nullable = false)
+    @Size(min=2,max=10)
     private String writer;
 
     @Column(name = "created_date")

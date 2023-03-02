@@ -9,9 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +23,20 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
 
+    public Map<String,String> validateHandling(Errors errors){
+        Map<String,String> validatorResult = new HashMap<>();
+
+        for (FieldError error: errors.getFieldErrors()){
+            String validKeyName = String.format("valid_%s",error.getField());
+            validatorResult.put(validKeyName,error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
+
+
     @Transactional
     public Long save(PostRequestDto dto){
+
         Post post = dto.toEntity();
         postRepository.save(post);
         return post.getId();
@@ -129,6 +145,7 @@ public class PostService {
         }
         return pageList;
     }
+
 
 
 

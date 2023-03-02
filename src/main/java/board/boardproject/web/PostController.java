@@ -21,7 +21,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -54,17 +58,25 @@ public class PostController {
 
     @GetMapping("/board/post/{id}")
     public String detail(Model model, @PathVariable Long id, @AuthenticationPrincipal UserDetails user){
-        model.addAttribute("boardDto",postService.findOne(id));
-        Member member = memberService.findOneByUsername(user.getUsername()).get();
-        model.addAttribute("nickname",member.getNickname());
+        if(setCommonAttributes(model,id,user)){
+            model.addAttribute("isOwn",true);
+        }else{
+            model.addAttribute("isOwn",false);
+        }
         return "/board/detail";
     }
     @GetMapping("/board/post/edit/{id}")
     public String update(Model model,@PathVariable Long id,@AuthenticationPrincipal UserDetails user){
-        model.addAttribute("boardDto",postService.findOne(id));
+        PostResponseDto dto = postService.findOne(id);
+        model.addAttribute("boardDto",dto);
         Member member = memberService.findOneByUsername(user.getUsername()).get();
         model.addAttribute("nickname",member.getNickname());
-        return "/board/update";
+        if (dto.getWriter() == member.getNickname()){
+            return "/board/update";
+        }else{
+            return "redirect:/board/post/" +id;
+        }
+
     }
     @GetMapping("/board/search")
     public String search(@PageableDefault(sort = "createDate",direction = Sort.Direction.DESC) Pageable pageable,
@@ -88,7 +100,18 @@ public class PostController {
      */
 
     @PostMapping("/api/posts")
-    public String save(PostRequestDto dto){
+    public String save(@Valid PostRequestDto dto, Errors errors,Model model){
+        if(errors.hasErrors()){
+            System.out.println(dto);
+            model.addAttribute("dto",dto);
+            Map<String,String> validateResult = postService.validateHandling(errors);
+            for (String key : validateResult.keySet()){
+                model.addAttribute(key,validateResult.get(key));
+                System.out.println(key);
+            }
+            return "/board/write";
+        }
+
         Long saveId = postService.save(dto);
         return "redirect:/board/list";
     }
@@ -105,6 +128,19 @@ public class PostController {
     }
 
 
+
+    private boolean setCommonAttributes(Model model, Long id, UserDetails user) {
+        PostResponseDto dto = postService.findOne(id);
+        model.addAttribute("boardDto", dto);
+        Member member = memberService.findOneByUsername(user.getUsername()).get();
+        model.addAttribute("nickname", member.getNickname());
+
+        if (dto.getWriter() == member.getNickname()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
 
