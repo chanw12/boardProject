@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -33,6 +34,9 @@ public class Member {
     @Column(name = "modified_date")
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+    @OneToMany(mappedBy = "member")
+    private List<Post> postList;
 
 
     public Member(String username, String password, String nickname) {

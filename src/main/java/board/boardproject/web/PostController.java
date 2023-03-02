@@ -7,17 +7,16 @@ import board.boardproject.domain.dto.PostResponseDto;
 import board.boardproject.repository.PostRepository;
 import board.boardproject.service.MemberService;
 import board.boardproject.service.PostService;
-import lombok.AllArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +41,6 @@ public class PostController {
         model.addAttribute("pageList",postService.getPageList(pageable));
         Member member = memberService.findOneByUsername(user.getUsername()).get();
         model.addAttribute("nickname",member.getNickname());
-
         return "board/list";
     }
     @GetMapping("/board/post")
@@ -101,6 +99,10 @@ public class PostController {
 
     @PostMapping("/api/posts")
     public String save(@Valid PostRequestDto dto, Errors errors,Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userid = auth.getName();
+        System.out.println("-----------------------");
+        System.out.println(userid);
         if(errors.hasErrors()){
             model.addAttribute("dto",dto);
             Map<String,String> validateResult = postService.validateHandling(errors);
@@ -110,7 +112,7 @@ public class PostController {
             return "/board/write";
         }
 
-        Long saveId = postService.save(dto);
+        Long saveId = postService.save(dto,userid);
         return "redirect:/board/list";
     }
     @PostMapping("/api/post/edit/{id}")

@@ -1,5 +1,6 @@
 package board.boardproject.domain.dto;
 
+import board.boardproject.domain.Member;
 import board.boardproject.domain.Post;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -20,8 +21,9 @@ public class PostRequestDto {
     @NotBlank
     private String content;
 
+    private Member member;
     public Post toEntity(){
-        Post post = new Post(title,content,writer);
+        Post post = new Post(title,content,writer,member);
         return post;
     }
 }

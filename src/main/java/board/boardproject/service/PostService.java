@@ -1,8 +1,10 @@
 package board.boardproject.service;
 
+import board.boardproject.domain.Member;
 import board.boardproject.domain.Post;
 import board.boardproject.domain.dto.PostResponseDto;
 import board.boardproject.domain.dto.PostRequestDto;
+import board.boardproject.repository.MemberRepository;
 import board.boardproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,10 +24,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService extends CommonService{
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+
+
+
+
 
     @Transactional
-    public Long save(PostRequestDto dto){
+    public Long save(PostRequestDto dto,String userid){
+        Member findMember = memberRepository.findByUsername(userid).get();
 
+        dto.setMember(findMember);
         Post post = dto.toEntity();
         postRepository.save(post);
         return post.getId();

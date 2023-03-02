@@ -1,23 +1,48 @@
 package board.boardproject.web;
 
 
+import board.boardproject.domain.Member;
+import board.boardproject.domain.Post;
 import board.boardproject.domain.dto.MemberRequestDto;
+import board.boardproject.repository.PostRepository;
 import board.boardproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController{
     private final MemberService memberService;
+    private final PostRepository postRepository;
+
+    @GetMapping("/profile")
+    public String profile(@RequestParam("nickname") String nickname, Model model,@PageableDefault(sort = "createDate",direction = Sort.Direction.DESC,size = 5) Pageable pageable){
+        Member findMember = memberService.findOneByNickname(nickname).get();
+        Page<Post> postPage = postRepository.findAllByWriter(nickname,pageable);
+        List<Post> postList = postPage.getContent();
+        model.addAttribute("member",findMember);
+        model.addAttribute("posts",postList);
+        model.addAttribute("pageable", postPage);
+        model.addAttribute("currentPage", postPage.getNumber() + 1);
+        model.addAttribute("totalPages", postPage.getTotalPages());
+        return "/board/profile";
+
+    }
+
+
+
     @GetMapping("/register")
     public String register(@ModelAttribute("dto")MemberRequestDto dto){
 

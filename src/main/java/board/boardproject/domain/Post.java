@@ -40,10 +40,15 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    public Post(String title, String content, String writer) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public Post(String title, String content, String writer,Member member) {
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.member = member;
     }
 
     public void update(String title,String writer, String content){

@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(title)">
+  <style>
+    /* CSS for small screens */
+    @media (max-width: 768px) {
+      .navbar-nav .dropdown-menu {
+        background-color: transparent;
+      }
+      .dropdown-item[href*="profile"] {
+        color: #fff !important;
+        background-color: transparent !important;
+      }
+    }
+  </style>
   <!-- Required meta tags -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -33,16 +45,20 @@
       </li>
 
     </ul>
-    <div>
-      <li class="text-white text-xl-center navbar-collapse collapse w-100" id="collapsingNavbar3">
-        <span class="text-white"> 사용자 이름:
-        </span>
-
-        <span class="nav-link " href="#" id="navbarDropdownMenuLink" role="button"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${nickname}">
-        </span>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false" th:text="${nickname}">
+          사용자 이름:
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item "  href="#" th:href="@{/profile(nickname=${nickname})}">
+            내 프로필
+          </a>
+        </div>
       </li>
-    </div>
+
+    </ul>
     <form action="/logout" method="POST">
       <button class="btn btn-danger" type="submit">로그아웃</button>
     </form>
