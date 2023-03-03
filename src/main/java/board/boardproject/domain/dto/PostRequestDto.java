@@ -23,7 +23,7 @@ public class PostRequestDto {
 
     private Member member;
     public Post toEntity(){
-        Post post = new Post(title,content,writer,member);
+        Post post = new Post(title,content,member);
         return post;
     }
 }

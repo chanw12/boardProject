@@ -30,7 +30,7 @@ public class MemberController{
     @GetMapping("/profile")
     public String profile(@RequestParam("nickname") String nickname, Model model,@PageableDefault(sort = "createDate",direction = Sort.Direction.DESC,size = 5) Pageable pageable){
         Member findMember = memberService.findOneByNickname(nickname).get();
-        Page<Post> postPage = postRepository.findAllByWriter(nickname,pageable);
+        Page<Post> postPage = postRepository.findAllByMemberNickname(nickname,pageable);
         List<Post> postList = postPage.getContent();
         model.addAttribute("member",findMember);
         model.addAttribute("posts",postList);

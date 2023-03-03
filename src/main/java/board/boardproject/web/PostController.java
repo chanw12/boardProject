@@ -101,8 +101,7 @@ public class PostController {
     public String save(@Valid PostRequestDto dto, Errors errors,Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userid = auth.getName();
-        System.out.println("-----------------------");
-        System.out.println(userid);
+
         if(errors.hasErrors()){
             model.addAttribute("dto",dto);
             Map<String,String> validateResult = postService.validateHandling(errors);

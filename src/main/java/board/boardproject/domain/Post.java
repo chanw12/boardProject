@@ -28,9 +28,6 @@ public class Post {
     @Column(columnDefinition = "TEXT",nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    @Size(min=2,max=10)
-    private String writer;
 
     @Column(name = "created_date")
     @CreatedDate
@@ -44,16 +41,14 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Post(String title, String content, String writer,Member member) {
+    public Post(String title, String content, Member member) {
         this.title = title;
         this.content = content;
-        this.writer = writer;
         this.member = member;
     }
 
-    public void update(String title,String writer, String content){
+    public void update(String title, String content){
         this.title = title;
-        this.writer = writer;
         this.content = content;
     }
 }

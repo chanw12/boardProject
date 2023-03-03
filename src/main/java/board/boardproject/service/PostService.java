@@ -26,14 +26,9 @@ public class PostService extends CommonService{
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-
-
-
-
     @Transactional
     public Long save(PostRequestDto dto,String userid){
         Member findMember = memberRepository.findByUsername(userid).get();
-
         dto.setMember(findMember);
         Post post = dto.toEntity();
         postRepository.save(post);
@@ -52,7 +47,7 @@ public class PostService extends CommonService{
     public Long update(Long id ,PostRequestDto dto){
         Post findPost = postRepository.findById(id).orElseThrow(()->
             new IllegalArgumentException("글이 존재하지 않습니다."));
-        findPost.update(dto.getTitle(),dto.getWriter(),dto.getContent());
+        findPost.update(dto.getTitle(),dto.getContent());
         return id;
     }
 
@@ -104,7 +99,7 @@ public class PostService extends CommonService{
                 searchResult = postRepository.findPostByContentContaining(keyword, pageable);
                 break;
             case "writer":
-                searchResult = postRepository.findPostByWriterContaining(keyword, pageable);
+                searchResult = postRepository.findPostByMemberContaining(keyword, pageable);
                 break;
             default:
                 throw new IllegalArgumentException("지원하지 않는 타입입니다: " + type);
@@ -128,7 +123,7 @@ public class PostService extends CommonService{
                 searchResult = postRepository.findPostByContentContaining(keyword, pageable);
                 break;
             case "writer":
-                searchResult = postRepository.findPostByWriterContaining(keyword, pageable);
+                searchResult = postRepository.findPostByMemberContaining(keyword, pageable);
                 break;
             default:
                 throw new IllegalArgumentException("타입이 정의 되지 않았습니다");
