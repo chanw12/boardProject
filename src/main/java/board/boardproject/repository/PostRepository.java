@@ -19,8 +19,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
 
     Page<Post> findAllByMemberNickname(String nickname,Pageable pageable);
-    Page<Post> findPostByMemberContaining(String keyword,Pageable pageable);
-
+    Page<Post> findPostByMember_NicknameContaining(String keyword,Pageable pageable);
 
 }
 

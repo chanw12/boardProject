@@ -68,9 +68,19 @@
           <div class="media-body">
             <h5 class="mt-0" th:text="${comment.member.nickname}"></h5>
             <p th:text="${comment.content}"></p>
+
           </div>
           <div>
             <p th:text="${comment.createDate} ? ${#temporals.format(comment.createDate,'yyyy-MM-dd HH:mm')} : ${comment.createDate}"></p>
+            <div th:if="${nickname} == ${comment.member.nickname}" class="container">
+              <div class="row justify-content-end small">
+                <div class="col-auto">
+                  <span>수정</span>
+                  <span>/</span>
+                  <span>삭제</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

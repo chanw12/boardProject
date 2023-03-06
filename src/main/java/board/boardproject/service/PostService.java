@@ -104,7 +104,7 @@ public class PostService extends CommonService{
                 searchResult = postRepository.findPostByContentContaining(keyword, pageable);
                 break;
             case "writer":
-                searchResult = postRepository.findPostByMemberContaining(keyword, pageable);
+                searchResult = postRepository.findPostByMember_NicknameContaining(keyword, pageable);
                 break;
             default:
                 throw new IllegalArgumentException("지원하지 않는 타입입니다: " + type);
@@ -128,7 +128,7 @@ public class PostService extends CommonService{
                 searchResult = postRepository.findPostByContentContaining(keyword, pageable);
                 break;
             case "writer":
-                searchResult = postRepository.findPostByMemberContaining(keyword, pageable);
+                searchResult = postRepository.findPostByMember_NicknameContaining(keyword, pageable);
                 break;
             default:
                 throw new IllegalArgumentException("타입이 정의 되지 않았습니다");

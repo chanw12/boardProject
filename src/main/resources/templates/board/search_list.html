@@ -46,7 +46,7 @@
     <!-- Pagination -->
     <div style="margin: 10px">
             <span th:each="pageNum : ${pageList}" th:inline="text">
-                <a th:href="@{'/board/search/?page=' + ${pageNum}+'&keyword='+${keyword} }">[[${pageNum}]]</a>
+                <a th:href="@{'/board/search/?page=' + ${pageNum}+'&keyword='+${keyword} +'&type='+${type} }">[[${pageNum}]]</a>
             </span>
       <!-- 글쓰기 버튼 -->
       <a style="float: right" class="btn btn-primary" th:href="@{/board/post}">글쓰기</a>
