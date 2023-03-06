@@ -5,6 +5,7 @@ import board.boardproject.domain.Comment;
 import board.boardproject.domain.Member;
 import board.boardproject.domain.Post;
 import board.boardproject.domain.dto.CommentReqDto;
+import board.boardproject.domain.dto.PostRequestDto;
 import board.boardproject.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ public class CommentService extends CommonService{
     private final CommentRepository commentRepository;
 
 
+    @Transactional
     public Long save(Long post_id,Long member_id, CommentReqDto dto){
         Member findMember = memberService.findOneByUserId(member_id).get();
         dto.setMember(findMember);
@@ -35,9 +37,24 @@ public class CommentService extends CommonService{
         return comment.getId();
 
     }
+    @Transactional
+    public Comment findByCommentId(Long commentid){
+        return commentRepository.findById(commentid).get();
+    }
+    @Transactional
     public Page<Comment> findAll_By_Postid(Long postid, Pageable pageable){
         Page<Comment> allByPostId = commentRepository.findAllByPostId(postid, pageable);
         return allByPostId;
     }
+
+    @Transactional
+    public Long update(Long id , CommentReqDto dto){
+        Comment findComment = commentRepository.findById(id).orElseThrow(()->
+                new IllegalArgumentException("글이 존재하지 않습니다."));
+        findComment.update(dto.getContent());
+        return id;
+    }
+
+
 
 }

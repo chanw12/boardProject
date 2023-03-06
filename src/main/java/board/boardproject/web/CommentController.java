@@ -1,5 +1,6 @@
 package board.boardproject.web;
 
+import board.boardproject.domain.Comment;
 import board.boardproject.domain.Member;
 import board.boardproject.domain.dto.CommentReqDto;
 import board.boardproject.repository.CommentRepository;
@@ -25,10 +26,16 @@ public class CommentController {
     public String comment_register(@RequestParam("postid") Long postid, @RequestParam("nickname") String nickname
             , CommentReqDto dto, RedirectAttributes re){
         Member findmember = memberService.findOneByNickname(nickname).get();
-//        re.addAttribute("page",t);
         commentService.save(postid,findmember.getId(),dto);
 
         return "redirect:/board/post/" + postid;
 
+    }
+
+    @PostMapping("/api/comment/edit")
+    public String comment_edit(@RequestParam("comment_id") Long commentid,@RequestParam("postid") Long postid,CommentReqDto dto){
+        commentService.update(commentid, dto);
+
+        return "redirect:/board/post/" +postid;
     }
 }

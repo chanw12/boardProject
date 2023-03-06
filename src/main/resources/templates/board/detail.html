@@ -63,7 +63,8 @@
       <div class="col-md-12">
         <h4>댓글</h4>
         <hr>
-        <div class="media mb-4" th:each="comment : ${comments}">
+        <div class="flex-column"  th:each="comment : ${comments}">
+          <div class="media mb-4 ">
           <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50x50" alt="">
           <div class="media-body">
             <h5 class="mt-0" th:text="${comment.member.nickname}"></h5>
@@ -74,14 +75,24 @@
             <p th:text="${comment.createDate} ? ${#temporals.format(comment.createDate,'yyyy-MM-dd HH:mm')} : ${comment.createDate}"></p>
             <div th:if="${nickname} == ${comment.member.nickname}" class="container">
               <div class="row justify-content-end small">
-                <div class="col-auto">
-                  <span>수정</span>
-                  <span>/</span>
-                  <span>삭제</span>
+                <div class="text-right text-sm-right">
+                  <a th:href="'#edit_comment_'+${comment.id}"  class="btn btn-sm text-secondary " data-toggle="collapse">수정</a>
+                  <span class="text-secondary">/</span>
+                  <span class="btn btn-sm text-secondary">삭제</span>
                 </div>
               </div>
+
             </div>
+
           </div>
+          </div>
+          <div class="collapse mt-3" th:id="'edit_comment_' + ${comment.id}">
+            <form class="d-flex" th:action="@{'/api/comment/edit'(comment_id=${comment.id},postid=${id})}" method="post" th:object="${commentDto}">
+              <textarea th:field="*{content}" th:value="*{content}" class="form-control m-2" rows="3" placeholder="수정할 댓글 내용을 입력하세요"></textarea>
+              <button type="submit" class="btn btn-primary m-2">저장</button>
+            </form>
+          </div>
+
         </div>
 
         <nav  aria-label="Page navigation">
