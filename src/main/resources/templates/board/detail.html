@@ -54,6 +54,55 @@
     </div>
 
 
+
+
+<!--    댓글-->
+
+    <!-- comments section -->
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <h4>댓글</h4>
+        <hr>
+        <div class="media mb-4" th:each="comment : ${comments}">
+          <img class="d-flex mr-3 rounded-circle" src="https://via.placeholder.com/50x50" alt="">
+          <div class="media-body">
+            <h5 class="mt-0" th:text="${comment.member.nickname}"></h5>
+            <p th:text="${comment.content}"></p>
+          </div>
+          <div>
+            <p th:text="${comment.createDate} ? ${#temporals.format(comment.createDate,'yyyy-MM-dd HH:mm')} : ${comment.createDate}"></p>
+          </div>
+        </div>
+
+        <nav  aria-label="Page navigation">
+          <ul class="pagination justify-content-center mt-3">
+            <li th:if="${comments.hasPrevious()}" class="page-item">
+              <a class="page-link"th:href="@{'/board/post/'+${boardDto.id}(page=${comments.getNumber()})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li th:if="${comments.hasNext()}"  class="page-item">
+              <a class="page-link" th:href="@{'/board/post/'+${boardDto.id}(page=${comments.getNumber()+2})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <hr>
+        <form class="mb-5" th:action="@{'/api/comment/?nickname=' + ${nickname} +'&postid='+${boardDto.id}}" method="post" th:object="${commentDto}">
+          <h5>댓글 작성하기</h5>
+          <div class="form-group">
+            <textarea class="form-control" rows="3" th:field="*{content}" th:value="*{content}"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">댓글 작성</button>
+        </form>
+      </div>
+    </div>
+
+
+
     <script th:inline="javascript" th:src="@{/js/board.js}"></script>
 
   </div>

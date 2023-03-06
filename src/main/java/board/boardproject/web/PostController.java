@@ -1,9 +1,12 @@
 package board.boardproject.web;
 
+import board.boardproject.domain.Comment;
 import board.boardproject.domain.Member;
 import board.boardproject.domain.Post;
+import board.boardproject.domain.dto.CommentReqDto;
 import board.boardproject.domain.dto.PostRequestDto;
 import board.boardproject.domain.dto.PostResponseDto;
+import board.boardproject.repository.CommentRepository;
 import board.boardproject.repository.PostRepository;
 import board.boardproject.service.MemberService;
 import board.boardproject.service.PostService;
@@ -11,6 +14,7 @@ import board.boardproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -30,10 +34,10 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class PostController {
+    private final CommentRepository commentRepository;
 
     private final PostService postService;
     private final MemberService memberService;
-    private final PostRepository postRepository;
 
     @GetMapping("/board/list")
     public String hello(@PageableDefault(sort = "createDate",direction = Sort.Direction.DESC) Pageable pageable, Model model, @AuthenticationPrincipal UserDetails user){
@@ -55,12 +59,16 @@ public class PostController {
     }
 
     @GetMapping("/board/post/{id}")
-    public String detail(Model model, @PathVariable Long id, @AuthenticationPrincipal UserDetails user){
+    public String detail(Model model, @PathVariable Long id, @AuthenticationPrincipal UserDetails user,@PageableDefault(sort = "createDate",direction = Sort.Direction.ASC) Pageable pageable){
         if(setCommonAttributes(model,id,user)){
             model.addAttribute("isOwn",true);
         }else{
             model.addAttribute("isOwn",false);
         }
+        Page<Comment> allByPostId = commentRepository.findAllByPost(postService.findOne_By_Postid(id), pageable);
+        model.addAttribute("comments",allByPostId);
+        CommentReqDto commentReqDto = new CommentReqDto();
+        model.addAttribute("commentDto",commentReqDto);
         return "/board/detail";
     }
     @GetMapping("/board/post/edit/{id}")

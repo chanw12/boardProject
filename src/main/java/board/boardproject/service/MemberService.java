@@ -48,5 +48,11 @@ public class MemberService extends CommonService{
         return memberRepository.findByUsername(username);
     }
 
+    @Transactional
+    public Optional<Member> findOneByUserId(Long userid){
+
+        return memberRepository.findById(userid);
+    }
+
 
 }

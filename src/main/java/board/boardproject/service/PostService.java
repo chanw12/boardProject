@@ -27,6 +27,11 @@ public class PostService extends CommonService{
     private final MemberRepository memberRepository;
 
     @Transactional
+    public Post findOne_By_Postid(Long id){
+        Post post = postRepository.findById(id).get();
+        return post;
+    }
+    @Transactional
     public Long save(PostRequestDto dto,String userid){
         Member findMember = memberRepository.findByUsername(userid).get();
         dto.setMember(findMember);
