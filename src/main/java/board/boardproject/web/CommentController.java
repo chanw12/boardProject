@@ -38,4 +38,9 @@ public class CommentController {
 
         return "redirect:/board/post/" +postid;
     }
+    @PostMapping("/api/comment/delete")
+    public String comment_delete(@RequestParam("comment_id") Long commentid,@RequestParam("postid") Long postid){
+        commentService.delete(commentid);
+        return "redirect:/board/post/"+ postid;
+    }
 }

@@ -75,10 +75,13 @@
             <p th:text="${comment.createDate} ? ${#temporals.format(comment.createDate,'yyyy-MM-dd HH:mm')} : ${comment.createDate}"></p>
             <div th:if="${nickname} == ${comment.member.nickname}" class="container">
               <div class="row justify-content-end small">
-                <div class="text-right text-sm-right">
+                <div class="text-right text-sm-right d-flex align-items-center">
                   <a th:href="'#edit_comment_'+${comment.id}"  class="btn btn-sm text-secondary " data-toggle="collapse">수정</a>
                   <span class="text-secondary">/</span>
-                  <span class="btn btn-sm text-secondary">삭제</span>
+                  <form id="delete-comment-form" th:action="@{'/api/comment/delete'(comment_id=${comment.id},postid=${id})}" method="post">
+                    <button  class="btn btn-sm text-secondary"  id="delete-comment-btn">삭제</button>
+                  </form>
+
                 </div>
               </div>
 

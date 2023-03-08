@@ -57,8 +57,12 @@ public class CommentService extends CommonService{
 
 
     @Transactional
-    public Long delete(){
-        return 1L;
+    public void delete(Long id){
+        Comment findComment = commentRepository.findById(id).orElseThrow(()->
+                new IllegalArgumentException("글이 존재하지 않습니다."));
+        commentRepository.delete(findComment);
+
+        return;
     }
 
 
