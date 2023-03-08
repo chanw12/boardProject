@@ -56,5 +56,11 @@ public class CommentService extends CommonService{
     }
 
 
+    @Transactional
+    public Long delete(){
+        return 1L;
+    }
+
+
 
 }

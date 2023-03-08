@@ -131,6 +131,9 @@ public class PostController {
     @PostMapping("/api/post/delete/{id}")
     public String delete(@PathVariable Long id){
         postService.deleteOne(id);
+        System.out.println("-----------------------------");
+        System.out.println(id);
+        System.out.println("_----------------------------");
         return "redirect:/board/list";
     }
 
