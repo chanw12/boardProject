@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -38,6 +39,9 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    @Column(columnDefinition = "Long default 0L",nullable = false)
+    private Long view;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -54,5 +58,9 @@ public class Post {
     public void update(String title, String content){
         this.title = title;
         this.content = content;
+    }
+
+    public void updateViewcount(Long view){
+        this.view = view+1;
     }
 }

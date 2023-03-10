@@ -26,6 +26,7 @@ public class PostService extends CommonService{
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
+
     @Transactional
     public Post findOne_By_Postid(Long id){
         Post post = postRepository.findById(id).get();
@@ -54,6 +55,11 @@ public class PostService extends CommonService{
             new IllegalArgumentException("글이 존재하지 않습니다."));
         findPost.update(dto.getTitle(),dto.getContent());
         return id;
+    }
+    @Transactional
+    public void viewCount(Long id){
+        Post findPost = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("글이 존재하지 않습니다."));
+        findPost.updateViewcount(findPost.getView());
     }
 
     @Transactional

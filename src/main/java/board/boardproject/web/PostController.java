@@ -65,6 +65,7 @@ public class PostController {
         }else{
             model.addAttribute("isOwn",false);
         }
+        postService.viewCount(id);
         Page<Comment> allByPostId = commentRepository.findAllByPost(postService.findOne_By_Postid(id), pageable);
         model.addAttribute("comments",allByPostId);
         CommentReqDto commentReqDto = new CommentReqDto();

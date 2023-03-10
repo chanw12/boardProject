@@ -62,7 +62,6 @@ public class CommentService extends CommonService{
                 new IllegalArgumentException("글이 존재하지 않습니다."));
         commentRepository.delete(findComment);
 
-        return;
     }
 
 
