@@ -14,7 +14,7 @@ public class PostResponseDto {
     private String writer;
     private String content;
     private LocalDateTime createdDate, modifiedDate;
-    private int view;
+    private Long view;
     private List<Comment> comment;
 
     /* Entity -> Dto*/
@@ -26,5 +26,6 @@ public class PostResponseDto {
         this.createdDate = post.getCreateDate();
         this.modifiedDate = post.getModifiedDate();
         this.comment = post.getComment();
+        this.view = post.getView();
     }
 }

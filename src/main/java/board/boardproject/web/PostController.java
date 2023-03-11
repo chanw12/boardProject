@@ -24,9 +24,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -59,13 +63,52 @@ public class PostController {
     }
 
     @GetMapping("/board/post/{id}")
-    public String detail(Model model, @PathVariable Long id, @AuthenticationPrincipal UserDetails user,@PageableDefault(sort = "createDate",direction = Sort.Direction.ASC) Pageable pageable){
+    public String detail(Model model, @PathVariable Long id,
+                         @AuthenticationPrincipal UserDetails user,
+                         @PageableDefault(sort = "createDate",direction = Sort.Direction.ASC) Pageable pageable,
+                         HttpServletRequest request, HttpServletResponse response){
         if(setCommonAttributes(model,id,user)){
             model.addAttribute("isOwn",true);
         }else{
             model.addAttribute("isOwn",false);
         }
-        postService.viewCount(id);
+
+        /*
+        조회수 로직
+         */
+        Cookie oldCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null){
+            for (Cookie cookie: cookies){
+                if (cookie.getName().equals("postView")){
+                    oldCookie = cookie;
+                }
+            }
+        }
+        if (oldCookie != null){
+            if(!oldCookie.getValue().contains("["+id.toString() + "]")){
+                postService.viewCount(id);
+                int num = StringUtils.countOccurrencesOf(oldCookie.getValue(), "_");
+                if (num >= 3){
+                    oldCookie.setValue(oldCookie.getValue().substring(oldCookie.getValue().indexOf("_")+1,oldCookie.getValue().length()) + "_[" + id+"]");
+                }
+                else{
+                    oldCookie.setValue(oldCookie.getValue() + "_[" + id+"]");
+                }
+
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60*10);
+                response.addCookie(oldCookie);
+            }
+        }else{
+            postService.viewCount(id);
+            Cookie newCookie = new Cookie("postView","["+id+"]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60*10);
+            response.addCookie(newCookie);
+        }
+
+
         Page<Comment> allByPostId = commentRepository.findAllByPost(postService.findOne_By_Postid(id), pageable);
         model.addAttribute("comments",allByPostId);
         CommentReqDto commentReqDto = new CommentReqDto();
@@ -132,9 +175,6 @@ public class PostController {
     @PostMapping("/api/post/delete/{id}")
     public String delete(@PathVariable Long id){
         postService.deleteOne(id);
-        System.out.println("-----------------------------");
-        System.out.println(id);
-        System.out.println("_----------------------------");
         return "redirect:/board/list";
     }
 

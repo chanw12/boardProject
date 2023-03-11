@@ -46,7 +46,7 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post",orphanRemoval = true)
+    @OneToMany(mappedBy = "post",orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Comment> comment;
 
     public Post(String title, String content, Member member) {

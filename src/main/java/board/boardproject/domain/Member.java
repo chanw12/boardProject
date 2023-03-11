@@ -35,7 +35,7 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
     private List<Post> postList;
 
 
