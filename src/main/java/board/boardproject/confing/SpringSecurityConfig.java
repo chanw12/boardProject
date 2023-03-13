@@ -30,6 +30,7 @@ public class SpringSecurityConfig {
                         .defaultSuccessUrl("/board/list", true)	// 성공 시 dashboard로
                         .permitAll()	// 대시보드 이동이 막히면 안되므로 얘는 허용
                         .failureHandler(loginFailHandler())
+
                 )
                 .logout(Customizer.withDefaults());	// 로그아웃은 기본설정으로 (/logout으로 인증해제)
         return http.build();

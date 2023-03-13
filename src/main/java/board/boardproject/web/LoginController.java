@@ -2,6 +2,7 @@ package board.boardproject.web;
 
 
 import board.boardproject.domain.dto.LoginFormDto;
+import board.boardproject.domain.dto.MemberRequestDto;
 import org.apache.catalina.User;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginController
@@ -25,6 +29,7 @@ public class LoginController
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return "redirect:board/list";
         }
+
         model.addAttribute("error",error);
         model.addAttribute("exception",exception);
         return "/board/login";
