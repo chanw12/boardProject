@@ -1,4 +1,4 @@
-package board.boardproject.confing;
+package board.boardproject.confing.login;
 
 import board.boardproject.domain.Member;
 import board.boardproject.domain.dto.MemberResponseDto;

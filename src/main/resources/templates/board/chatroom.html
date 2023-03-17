@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Room</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    .container {
+      padding-top: 5rem; /* navigation bar의 높이만큼 padding을 추가합니다. */
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: info('home',${nickname})"/>
+<div class="container">
+  <h1 th:text="${chatRoom.name}"></h1>
+
+  <div id="messages" name="messages" >
+
+  </div>
+    <div class="form-group">
+      <label for="message">Message:</label>
+      <input type="text" class="form-control" id="message" name="message">
+    </div>
+    <button id="sendButton" type="button" class="btn btn-primary">Send</button>
+  <hr>
+
+</div>
+<!-- Bootstrap JS -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+<script th:inline="javascript">
+    $(function (){
+      let roomId =[[${chatRoom.roomId}]];
+      var sock = new SockJS('http://localhost:8080/ws-stomp');
+      var ws = Stomp.over(sock);
+      var reconnect = 0;
+      ws.connect({},function (frame) {
+        ws.subscribe('/sub/chat/room/' + roomId , function(message){
+          showMessage(JSON.parse(message.body));
+        })
+        ws.send("/pub/chat/message",{},JSON.stringify({type:"ENTER",roomId,sender:[[${nickname}]]}))
+
+      })
+      $('#sendButton').click(function (e) {
+        e.preventDefault();
+        ws.send("/pub/chat/message", {}, JSON.stringify({
+          type: 'TALK', roomId: roomId, sender: [[${nickname}]], message: $('#message').val()
+        }));
+        $('#message').val('');
+      });
+      function showMessage(message){
+        console.log("showMessage")
+        var messageElement = $('<p></p>');
+        messageElement.text(message.sender + ": "+message.message);
+        $('#messages').append(messageElement);
+      }
+    })
+
+
+</script>
+</body>
+</html>

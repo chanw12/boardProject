@@ -1,4 +1,4 @@
-package board.boardproject.confing;
+package board.boardproject.confing.login;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable()
                 .authorizeRequests()
-                .antMatchers("/register","/login").permitAll()
+                .antMatchers("/register","/login","/ws-stomp","/chat","/chat/*").permitAll()
                 .anyRequest().authenticated().and()
                 .formLogin(login -> login	// form 방식 로그인 사용
                         .loginPage("/login")

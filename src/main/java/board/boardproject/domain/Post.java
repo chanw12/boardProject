@@ -39,7 +39,7 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    @Column(columnDefinition = "Long default 0L",nullable = false)
+    @Column(columnDefinition = "Long default 0L")
     private Long view;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,6 +53,7 @@ public class Post {
         this.title = title;
         this.content = content;
         this.member = member;
+        this.view = 0L;
     }
 
     public void update(String title, String content){

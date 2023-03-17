@@ -69,3 +69,4 @@ insert into comment (created_date,modified_date,content,member_id,post_id) value
 insert into comment (created_date,modified_date,content,member_id,post_id) values (current_timestamp(),current_timestamp(),'asdfasdf',1,1);
 insert into comment (created_date,modified_date,content,member_id,post_id) values (current_timestamp(),current_timestamp(),'asdfasdf',1,1);
 insert into comment (created_date,modified_date,content,member_id,post_id) values (current_timestamp(),current_timestamp(),'asdfasdf',1,1);
+insert into chat_room (room_Id,name) values('732df39e-d49d-4917-b65d-a2553b04cdc0','chc');
