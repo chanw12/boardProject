@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        /* 폼 숨기기 */
+        #loginForm {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <form id="loginForm" action="/login" method="post" >
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" th:value="${dto.username}"   class="form-control" id="username" name="username" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" th:value="${dto.password}"  class="form-control" id="password" name="password" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    <script th:inline="javascript">
+        window.onload = function() {
+            if ([[${loginalert}]] == false){
+                console.log(document.getElementById('loginForm'))
+                document.getElementById('loginForm').submit(); // 로그인 폼 자동 제출
+            }
+        };
+    </script>
+</div>
+<!-- alert 변수가 true일 때 -->
+<div th:if="${loginalert}">
+    <script th:inline="javascript">
+        if (confirm("이미 로그인된 사용자입니다. 다른 장치에서 로그아웃하시겠습니까?")) {
+            // 확인 버튼을 누른 경우
+            document.getElementById('loginForm').submit();
+        } else {
+            location.href = "/login"
+        }
+    </script>
+</div>
+
+</body>
+</html>

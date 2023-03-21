@@ -21,6 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -49,6 +51,7 @@ public class PostController {
         model.addAttribute("pageList",postService.getPageList(pageable));
         Member member = memberService.findOneByUsername(user.getUsername()).get();
         model.addAttribute("nickname",member.getNickname());
+
         return "board/list";
     }
     @GetMapping("/board/post")

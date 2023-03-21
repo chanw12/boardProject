@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <title>Login</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+
 </head>
 <body>
 <div class="container mt-5">
+
     <h1 class="text-center">Login</h1>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form action="/login" method="post" >
+            <form action="/logincheck" method="get" >
                 <div th:if="${error}" th:text="${exception}" class="alert alert-danger" role="alert">
                 </div>
                 <div class="form-group">
@@ -19,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password"  class="form-control" id="password" name="password" />
+                    <input type="password" th:value="${#request.session.getAttribute('password')}"  class="form-control" id="password" name="password" />
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
@@ -28,6 +31,12 @@
             </div>
 
         </div>
+    </div>
+    <div th:if="${alert}" class="alert alert-warning" role="alert">
+        <p>This is a warning message. Please proceed with caution.<p/>
+        <form>
+
+        </form>
     </div>
 
 </div>

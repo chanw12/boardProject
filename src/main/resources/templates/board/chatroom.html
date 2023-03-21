@@ -9,7 +9,15 @@
   <style>
     .container {
       padding-top: 5rem; /* navigation bar의 높이만큼 padding을 추가합니다. */
+
     }
+    #messages{
+      max-height: 400px; /* 일정 크기를 넘어가면 스크롤이 생기도록 설정합니다. */
+      overflow-y: scroll; /* 스크롤이 필요한 경우 수직 스크롤을 표시합니다. */
+      height: 400px;
+      background-color:lightgrey;
+    }
+
   </style>
 </head>
 <body>
@@ -17,15 +25,17 @@
 <div class="container">
   <h1 th:text="${chatRoom.name}"></h1>
 
-  <div id="messages" name="messages" >
-
+  <div id="messages" name="messages" class="rounded-lg p-2" >
   </div>
-    <div class="form-group">
-      <label for="message">Message:</label>
-      <input type="text" class="form-control" id="message" name="message">
-    </div>
-    <button id="sendButton" type="button" class="btn btn-primary">Send</button>
   <hr>
+  <div class="form-group">
+    <label for="message">Message:</label>
+    <div class=" flex-row d-flex align-items-center justify-content-between">
+      <input type="text" class="col-sm-10 form-control" id="message" name="message">
+      <button  id="sendButton" type="button" class="ml-2 col-sm-2 btn btn-primary">보내기</button>
+    </div>
+  </div>
+
 
 </div>
 <!-- Bootstrap JS -->
@@ -34,34 +44,44 @@
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
 <script th:inline="javascript">
-    $(function (){
-      let roomId =[[${chatRoom.roomId}]];
-      var sock = new SockJS('http://localhost:8080/ws-stomp');
-      var ws = Stomp.over(sock);
-      var reconnect = 0;
-      ws.connect({},function (frame) {
-        ws.subscribe('/sub/chat/room/' + roomId , function(message){
-          showMessage(JSON.parse(message.body));
-        })
-        ws.send("/pub/chat/message",{},JSON.stringify({type:"ENTER",roomId,sender:[[${nickname}]]}))
-
+  $(function (){
+    let roomId =[[${chatRoom.roomId}]];
+    var sock = new SockJS('http://localhost:8080/ws-stomp');
+    var ws = Stomp.over(sock);
+    var reconnect = 0;
+    ws.connect({},function (frame) {
+      ws.subscribe('/sub/chat/room/' + roomId , function(message){
+        showMessage(JSON.parse(message.body));
       })
-      $('#sendButton').click(function (e) {
-        e.preventDefault();
+      ws.send("/pub/chat/message",{},JSON.stringify({type:"ENTER",roomId,sender:[[${nickname}]]}))
+
+    })
+    $('#sendButton').click(function (e) {
+      e.preventDefault();
+      ws.send("/pub/chat/message", {}, JSON.stringify({
+        type: 'TALK', roomId: roomId, sender: [[${nickname}]], message: $('#message').val()
+      }));
+      $('#message').val('');
+    });
+    $('#message').keydown(function (key){
+      if(key.keyCode == 13){
         ws.send("/pub/chat/message", {}, JSON.stringify({
           type: 'TALK', roomId: roomId, sender: [[${nickname}]], message: $('#message').val()
         }));
         $('#message').val('');
-      });
-      function showMessage(message){
-        console.log("showMessage")
-        var messageElement = $('<p></p>');
-        messageElement.text(message.sender + ": "+message.message);
-        $('#messages').append(messageElement);
       }
-    })
+    });
 
-
+    function showMessage(message){
+      console.log("showMessage")
+      var messageElement = $('<p></p>');
+      if (message.type == "ENTER")
+        messageElement.text(message.message);
+      else
+        messageElement.text(message.sender + ": "+message.message);
+      $('#messages').append(messageElement);
+    }
+  })
 </script>
 </body>
 </html>

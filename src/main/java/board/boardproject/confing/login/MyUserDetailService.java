@@ -6,6 +6,7 @@ import board.boardproject.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,12 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 @Slf4j
 public class MyUserDetailService implements UserDetailsService {
-
     private final MemberService memberService;
 
     public MyUserDetailService(MemberService memberService){

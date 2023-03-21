@@ -19,7 +19,8 @@
 
 
 <body>
-<div class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: info('board',${nickname})"/>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: info('board',${nickname})"/>
+<div class="mt-5">
 <div class="container mt-5">
     <div class="mt-5">
         <table class="table table-bordered">
@@ -77,6 +78,7 @@
 
         </form>
     </div>
+</div>
 </div>
 
 <!-- Optional JavaScript -->

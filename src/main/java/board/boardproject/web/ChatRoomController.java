@@ -31,7 +31,6 @@ public class ChatRoomController {
     @GetMapping("/room")
     public String rooms(Model model, @AuthenticationPrincipal UserDetails user) {
         Member member = memberService.findOneByUsername(user.getUsername()).get();
-
         model.addAttribute("nickname",member.getNickname());
         model.addAttribute("chatRooms",chatService.findAllRoom());
         return "/board/chatroomlist";
