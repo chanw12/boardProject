@@ -37,6 +37,8 @@
     </div>
 
     <div class="container mt-5">
+      <div th:if="${errors}" th:text="${errors}" class="alert alert-danger" role="alert"></div>
+
       <div th:if="${valid_username}" class="alert alert-danger" role="alert">아이디를 입력해주세요.</div>
       <div th:if="${valid_password}" class="alert alert-danger" role="alert">비밀번호를 입력해주세요.</div>
       <div th:if="${valid_nickname}" class="alert alert-danger" role="alert">닉네임을 입력해주세요.</div>

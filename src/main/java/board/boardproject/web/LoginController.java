@@ -29,14 +29,12 @@ public class LoginController
     @GetMapping("/login")
     public String login(@RequestParam(value = "error",required = false)String error,
                         @RequestParam(value = "exception",required = false)String exception,
-                        @RequestParam(value = "loginalert",required = false)Boolean alert,
                         Model model){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return "redirect:board/list";
         }
-        model.addAttribute("alert",alert);
         model.addAttribute("error",error);
         model.addAttribute("exception",exception);
         return "/board/login";

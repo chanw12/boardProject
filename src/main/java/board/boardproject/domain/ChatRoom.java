@@ -7,8 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.socket.WebSocketSession;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,8 +19,9 @@ public class ChatRoom {
     @Id
     private String roomId;
     private String name;
+
     @Builder
-    public ChatRoom(String roomId,String name){
+    public ChatRoom(String roomId,String name,List<String> members){
         this.roomId = roomId;
         this.name = name;
     }

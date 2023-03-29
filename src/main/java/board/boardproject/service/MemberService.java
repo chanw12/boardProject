@@ -1,26 +1,14 @@
 package board.boardproject.service;
 
 import board.boardproject.domain.Member;
-import board.boardproject.domain.Post;
 import board.boardproject.domain.dto.MemberRequestDto;
-import board.boardproject.domain.dto.MemberResponseDto;
-import board.boardproject.domain.dto.PostRequestDto;
-import board.boardproject.domain.dto.PostResponseDto;
 import board.boardproject.repository.MemberRepository;
-import board.boardproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +16,16 @@ public class MemberService extends CommonService{
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    @Transactional
+    public List<Member> findAllByUsername(List<String> usernames){
+        List<Member> members = new ArrayList<>();
+        for(String username : usernames){
+            Member member = memberRepository.findByUsername(username).get();
+            members.add(member);
+        }
+        return members;
+    }
 
     @Transactional
     public Optional<Member> findOneByNickname(String nickname){
@@ -38,7 +36,16 @@ public class MemberService extends CommonService{
     public Long save(MemberRequestDto dto){
         MemberRequestDto pwencodedDto = new MemberRequestDto(dto.getUsername(), passwordEncoder.encode(dto.getPassword()), dto.getNickname());
         Member member = pwencodedDto.toEntity();
-        memberRepository.save(member);
+        if (memberRepository.existsByNickname(member.getNickname()))
+        {
+            throw new IllegalStateException("이미 존재하는 닉네임입니다");
+        }else if(memberRepository.existsByUsername(member.getUsername())){
+            throw new IllegalStateException("이미 존재하는 아이디 입니다");
+        }
+        else{
+            memberRepository.save(member);
+        }
+
         return member.getId();
     }
 

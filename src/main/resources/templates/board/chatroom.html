@@ -23,6 +23,21 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: info('home',${nickname})"/>
 <div class="container">
+
+  <div class="row mb-2">
+  <div class="col-6">
+    <h2 id="userNum"></h2>
+  </div>
+  <div class="col-6 text-right">
+    <button href="/chat/room" name="disconnect" id="disconnect" class="btn btn-secondary">Leave Room</button>
+  </div>
+</div>
+<div class="list-group" style="height: 200px; overflow-y: auto;">
+  <ul id="users" th:name="users" class="list-group-flush">
+    <!-- 리스트 아이템 -->
+  </ul>
+</div>
+
   <h1 th:text="${chatRoom.name}"></h1>
 
   <div id="messages" name="messages" class="rounded-lg p-2" >
@@ -49,13 +64,18 @@
     var sock = new SockJS('http://localhost:8080/ws-stomp');
     var ws = Stomp.over(sock);
     var reconnect = 0;
+
     ws.connect({},function (frame) {
       ws.subscribe('/sub/chat/room/' + roomId , function(message){
         showMessage(JSON.parse(message.body));
       })
+      ws.subscribe('/sub/users/'+roomId,function(users){
+        showUsers(JSON.parse(users.body));
+      });
+      ws.send("/pub/users",{},JSON.stringify({sender:[[${nickname}]],type:"ENTER",roomId}))
       ws.send("/pub/chat/message",{},JSON.stringify({type:"ENTER",roomId,sender:[[${nickname}]]}))
-
     })
+
     $('#sendButton').click(function (e) {
       e.preventDefault();
       ws.send("/pub/chat/message", {}, JSON.stringify({
@@ -72,11 +92,45 @@
       }
     });
 
+
+
+    $('#disconnect').click(function (){
+      disconnect()
+    });
+    function disconnect() {
+      if (ws !== null) {
+        ws.send("/pub/chat/message",{},JSON.stringify({type:"LEAVE",roomId,sender:[[${nickname}]]}))
+        ws.send("/pub/users",{},JSON.stringify({sender:[[${nickname}]],type:"LEAVE",roomId}))
+        ws.disconnect(function() {});
+        ws = null;
+        location.href = '/chat/room'
+
+      }
+    }
+    function showUsers(users){
+      console.log(users)
+      usersElement = $('<ul id="users" th:name ="users"></ul>')
+
+      for (const user of users) {
+        var userElement = $('<li></li>')
+        console.log(user)
+        userElement.text(user)
+        usersElement.append(userElement)
+      }
+      $('#users').replaceWith(usersElement)
+      $('#userNum').text("사용자수:" + users.length)
+    }
+
+
     function showMessage(message){
-      console.log("showMessage")
       var messageElement = $('<p></p>');
-      if (message.type == "ENTER")
+      if (message.type == "ENTER"){
+
         messageElement.text(message.message);
+      }
+      else if(message.type == "LEAVE"){
+        messageElement.text(message.message);
+      }
       else
         messageElement.text(message.sender + ": "+message.message);
       $('#messages').append(messageElement);
