@@ -37,7 +37,7 @@ public class MemberController{
         model.addAttribute("pageable", postPage);
         model.addAttribute("currentPage", postPage.getNumber() + 1);
         model.addAttribute("totalPages", postPage.getTotalPages());
-        return "/board/profile";
+        return "board/profile";
 
     }
 
@@ -46,7 +46,7 @@ public class MemberController{
     @GetMapping("/register")
     public String register(@ModelAttribute("dto")MemberRequestDto dto){
 
-        return "/board/register";
+        return "board/register";
     }
 
     @PostMapping("/register")
@@ -59,7 +59,7 @@ public class MemberController{
                 System.out.println(key);
             }
             model.addAttribute("dto",dto);
-            return "/board/register";
+            return "board/register";
         }
         else{
             try{
@@ -69,7 +69,7 @@ public class MemberController{
                 model.addAttribute("dto",dto);
                 System.out.println("-----------------------");
                 System.out.println(e);
-                return "/board/register";
+                return "board/register";
             }
             return "redirect:/login";
         }

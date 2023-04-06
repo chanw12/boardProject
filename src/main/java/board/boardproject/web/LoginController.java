@@ -37,7 +37,7 @@ public class LoginController
         }
         model.addAttribute("error",error);
         model.addAttribute("exception",exception);
-        return "/board/login";
+        return "board/login";
 
     }
     @GetMapping("/logincheck")
@@ -55,7 +55,7 @@ public class LoginController
 
         model.addAttribute("dto",dto);
         model.addAttribute("loginalert",alert);
-        return "/board/logincheck";
+        return "board/logincheck";
     }
 
 

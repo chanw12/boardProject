@@ -45,7 +45,7 @@ public class ChatRoomController {
         model.addAttribute("chatRooms",chatService.findAllRoom());
 
 
-        return "/board/chatroomlist";
+        return "board/chatroomlist";
     }
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
@@ -67,7 +67,7 @@ public class ChatRoomController {
         model.addAttribute("nickname",member.getNickname());
         model.addAttribute("chatRoom",findChatRoom);
         System.out.println(findChatRoom);
-        return "/board/chatroom";
+        return "board/chatroom";
     }
 
 

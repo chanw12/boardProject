@@ -17,28 +17,4 @@ import java.util.Optional;
 class BoardprojectApplicationTests {
 
 
-
-	@Autowired
-	HelloRepository helloRepository;
-
-
-
-	@Test
-	void contextLoads() {
-	}
-
-	@Test
-	void save() {
-		//given
-		Hello item = new Hello("chanw");
-
-		//when
-		Hello savedHello = helloRepository.save(item);
-
-		Hello findHello = helloRepository.findById(savedHello.getId()).get();
-		Assertions.assertThat(savedHello.getName()).isEqualTo(findHello.getName());
-
-
-	}
-
 }

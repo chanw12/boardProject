@@ -39,7 +39,8 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    @Column(columnDefinition = "Long default 0L")
+//    @Column(columnDefinition = "Long default 0L")
+    @Column
     private Long view;
 
     @ManyToOne(fetch = FetchType.LAZY)

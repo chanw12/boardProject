@@ -62,7 +62,7 @@ public class PostController {
         dto.setWriter(member.getNickname());
         model.addAttribute("dto",dto);
 
-        return "/board/write";
+        return "board/write";
     }
 
     @GetMapping("/board/post/{id}")
@@ -116,7 +116,7 @@ public class PostController {
         model.addAttribute("comments",allByPostId);
         CommentReqDto commentReqDto = new CommentReqDto();
         model.addAttribute("commentDto",commentReqDto);
-        return "/board/detail";
+        return "board/detail";
     }
     @GetMapping("/board/post/edit/{id}")
     public String update(Model model,@PathVariable Long id,@AuthenticationPrincipal UserDetails user){
@@ -125,7 +125,7 @@ public class PostController {
         Member member = memberService.findOneByUsername(user.getUsername()).get();
         model.addAttribute("nickname",member.getNickname());
         if (dto.getWriter() == member.getNickname()){
-            return "/board/update";
+            return "board/update";
         }else{
             return "redirect:/board/post/" +id;
         }
@@ -140,7 +140,7 @@ public class PostController {
         model.addAttribute("type",type);
         Member member = memberService.findOneByUsername(user.getUsername()).get();
         model.addAttribute("nickname",member.getNickname());
-        return"/board/search_list";
+        return"board/search_list";
     }
 
 
@@ -163,7 +163,7 @@ public class PostController {
             for (String key : validateResult.keySet()){
                 model.addAttribute(key,validateResult.get(key));
             }
-            return "/board/write";
+            return "board/write";
         }
 
         Long saveId = postService.save(dto,userid);
