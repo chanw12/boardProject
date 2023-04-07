@@ -61,7 +61,7 @@
 <script th:inline="javascript">
   $(function (){
     let roomId =[[${chatRoom.roomId}]];
-    var sock = new SockJS('http://localhost:8080/ws-stomp');
+    var sock = new SockJS('http://15.164.205.207:8080/ws-stomp');
     var ws = Stomp.over(sock);
     var reconnect = 0;
 

@@ -29,13 +29,10 @@ public class WebSocketEventListener {
         System.out.println(user);
         String destination = simpMessageHeaderAccessor.getDestination();
         if (destination!=null){
-            System.out.println("---------------");
             System.out.println(destination);
             List<String> users = getCollect(destination);
             messagingTemplate.convertAndSend(destination,users);
         }
-        System.out.println("유저가 접속했스빈다------------");
-
     }
 
     @EventListener
@@ -47,7 +44,6 @@ public class WebSocketEventListener {
             messagingTemplate.convertAndSend(destination,users);
 
         }
-        System.out.println("유저가 해제했스빈다------------");
     }
 
     private List<String> getCollect(String destination) {

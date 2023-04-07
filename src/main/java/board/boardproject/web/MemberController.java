@@ -52,7 +52,6 @@ public class MemberController{
     @PostMapping("/register")
     public String registerMember(@Valid MemberRequestDto dto, Errors errors, Model model){
         if (errors.hasErrors()){
-            System.out.println("0---------------오류");
             Map<String, String> validateResult = memberService.validateHandling(errors);
             for (String key : validateResult.keySet()){
                 model.addAttribute(key,validateResult.get(key));
@@ -67,8 +66,6 @@ public class MemberController{
             }catch(IllegalStateException e){
                 model.addAttribute("errors",e.getMessage());
                 model.addAttribute("dto",dto);
-                System.out.println("-----------------------");
-                System.out.println(e);
                 return "board/register";
             }
             return "redirect:/login";
